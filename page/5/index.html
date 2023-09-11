@@ -148,7 +148,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/11/maven%E5%AD%A6%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/11/nacos/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -162,7 +162,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/09/11/maven%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2023/09/11/nacos/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta">
@@ -179,7 +179,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-21 11:14:38" itemprop="dateModified" datetime="2023-07-21T11:14:38+08:00">2023-07-21</time>
+                <time title="修改时间：2023-07-21 13:44:59" itemprop="dateModified" datetime="2023-07-21T13:44:59+08:00">2023-07-21</time>
               </span>
 
           
@@ -193,51 +193,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="maven学习"><a href="#maven学习" class="headerlink" title="maven学习"></a>maven学习</h1><hr>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote>
-<p>Maven 是 Apache 软件基金会的一个开源项目,是一个优秀的项目构建工具,它用来帮助开发者管理项目中的 jar,以及 jar 之间的依赖关系、完成项目的编译、测试、打包和发布等工作。</p>
-</blockquote>
-<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>maven的作用有点像docker,可以把这个jar包保存在本地仓库，需要的时候直接引用就好，没有的jar包会自动联网下载。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="官网下载（https-maven-apache-org-download-cgi）"><a href="#官网下载（https-maven-apache-org-download-cgi）" class="headerlink" title="官网下载（https://maven.apache.org/download.cgi）"></a>官网下载（<a target="_blank" rel="noopener" href="https://maven.apache.org/download.cgi%EF%BC%89">https://maven.apache.org/download.cgi）</a></h3><p><img src="C:/Users/admin/AppData/Roaming/Typora/typora-user-images/image-20230721103514070.png" alt="image-20230721103514070"></p>
-<h3 id="解压并设置环境变量"><a href="#解压并设置环境变量" class="headerlink" title="解压并设置环境变量"></a>解压并设置环境变量</h3><ol>
-<li>path添加xxx\maven-3.9.3\bin</li>
-<li>mvn -version</li>
-</ol>
-<p>至此，安装完成。</p>
-<hr>
-<h2 id="配置本地仓库和镜像"><a href="#配置本地仓库和镜像" class="headerlink" title="配置本地仓库和镜像"></a>配置本地仓库和镜像</h2><pre><code> 1. 打开xxx\maven-3.9.3\conf\settings.xml
- 2. 配置本地仓库
-</code></pre>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">localRepository</span>&gt;</span>xx\maven-3.9.3\localrepository<span class="tag">&lt;/<span class="name">localRepository</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>   3.配置镜像源</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span>   <span class="comment">&lt;!-- 配置阿里云镜像仓库 --&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">id</span>&gt;</span>alimaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">name</span>&gt;</span>aliyun maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="IDEA配置maven"><a href="#IDEA配置maven" class="headerlink" title="IDEA配置maven"></a>IDEA配置maven</h2><p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211050805.png" alt="image-20230721105009728"></p>
-<hr>
-<h2 id="pom-xml-http-mvnrepository-com"><a href="#pom-xml-http-mvnrepository-com" class="headerlink" title="pom.xml(http://mvnrepository.com/)"></a>pom.xml(<a target="_blank" rel="noopener" href="http://mvnrepository.com/">http://mvnrepository.com/</a>)</h2><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><blockquote>
-<p>pom是maven的组件，以xml的形式存放在根目录，定义了项目的基本信息、构建、声明项目依赖</p>
-</blockquote>
-<h3 id="具体内容"><a href="#具体内容" class="headerlink" title="具体内容"></a>具体内容</h3><ul>
-<li>项目依赖</li>
-<li>插件</li>
-<li>目标</li>
-<li>构建的配置文件</li>
-<li>版本</li>
-<li>开发者</li>
-<li>邮件列表</li>
-</ul>
-<h3 id="maven坐标"><a href="#maven坐标" class="headerlink" title="maven坐标"></a>maven坐标</h3><ul>
-<li>groupId： 项目组 ID，定义当前 Maven 项目隶属的组织或公司，通常是唯一的。它的取值一般是项目所属公司或组织的网址或 URL 的反写</li>
-<li>artifactId： 项目 ID，通常是项目的名称</li>
-<li>version：版本</li>
-<li>packaging：项目的打包方式，默认值为 jar</li>
-</ul>
-<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211110800.png" alt="image-20230721111003733"></p>
-<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>在pom.xml设置完坐标后，点击IDEA的maven刷新按钮即可安装包</p>
-<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211113268.png" alt="image-20230721111352201"></p>
-
+          
       
     </div>
 
@@ -255,7 +211,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -321,7 +277,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -148,7 +148,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/11/redis%E5%AD%A6%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/11/%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -162,7 +162,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/09/11/redis%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2023/09/11/%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta">
@@ -179,7 +179,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-21 13:44:38" itemprop="dateModified" datetime="2023-07-21T13:44:38+08:00">2023-07-21</time>
+                <time title="修改时间：2023-03-24 11:17:06" itemprop="dateModified" datetime="2023-03-24T11:17:06+08:00">2023-03-24</time>
               </span>
 
           
@@ -193,28 +193,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="rides学习记录"><a href="#rides学习记录" class="headerlink" title="rides学习记录"></a>rides学习记录</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote>
-<p>redis是一个key-value存储系统。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)和zset(有序集合)。这些数据类型都支持push&#x2F;pop、add&#x2F;remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。在此基础上，redis支持各种不同方式的排序。与memcached一样，为了保证效率，数据都是缓存在内存中。区别的是redis会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了master-slave(主从)同步</p>
-</blockquote>
-<h2 id="安装（https-redis-io-download-）"><a href="#安装（https-redis-io-download-）" class="headerlink" title="安装（https://redis.io/download/）"></a>安装（<a target="_blank" rel="noopener" href="https://redis.io/download/%EF%BC%89">https://redis.io/download/）</a></h2><p>1.下载</p>
-<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211122032.png" alt="image-20230721112243988"></p>
-<p>2.linux下载redis的依赖</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc tcl gcc-c++ make</span><br></pre></td></tr></table></figure>
-
-<p>3.解压安装文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">windows把文件传到linux上---！！！windows的cmd执行</span></span><br><span class="line">scp xxx\redis-7.0.12.tar.gz root@ip地址:/usr/local/src/</span><br><span class="line">tar -zxvf redis-7.0.12.tar.gz</span><br></pre></td></tr></table></figure>
-
-<p>4.进入并安装</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd redis-7.0.12/</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211143441.png"></p>
-<p>5.启动</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">redis-server：redis 的服务端启动脚本</span><br><span class="line">redis-cli：redis 提供的客户端启动脚本</span><br><span class="line">redis-sentinel：redis 提供的哨兵启动脚本</span><br><span class="line">redis-benchmark：性能测试工具，可以在自己电脑上运行来查看性能</span><br><span class="line">redis-check-aof：修复有问题的AOF文件</span><br><span class="line">redis-check-dump：修复有问题的dump.rdb文件</span><br></pre></td></tr></table></figure>
-
-<p>6.修改配置文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/src/redis-7.0.12/</span><br><span class="line">cp redis.conf /etc</span><br><span class="line">cd /etc</span><br><span class="line">修改redis.conf的daemonize为yes</span><br></pre></td></tr></table></figure>
+          <h1 id="弱网测试"><a href="#弱网测试" class="headerlink" title="弱网测试"></a>弱网测试</h1><h2 id="一：网络延迟"><a href="#一：网络延迟" class="headerlink" title="一：网络延迟"></a>一：网络延迟</h2><h3 id="1-1介绍"><a href="#1-1介绍" class="headerlink" title="1.1介绍"></a>1.1介绍</h3><p>定义：网络延迟是指各式各样的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE/5947370?fromModule=lemma_inlink">数据</a>在<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BD%91%E7%BB%9C%E4%BB%8B%E8%B4%A8/6915733?fromModule=lemma_inlink">网络介质</a>中通过<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/328636?fromModule=lemma_inlink">网络协议</a>(TCP&#x2F;IP)进行传输，如果<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%BF%A1%E6%81%AF%E9%87%8F/420401?fromModule=lemma_inlink">信息量</a>过大不加以限制，超额的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BD%91%E7%BB%9C%E6%B5%81%E9%87%8F/7489548?fromModule=lemma_inlink">网络流量</a>就会导致设备反应缓慢，造成网络延迟</p>
+<p>原因：带宽不足、本机到服务器之间路由过多</p>
+<p>影响：</p>
+<p><img src="/2023/09/11/%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88/_posts/%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88/clip_image002.jpg"></p>
 
 
+<h3 id="1-2工具"><a href="#1-2工具" class="headerlink" title="1.2工具"></a>1.2工具</h3><p>Fiddler</p>
+<p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image003.png" alt="img"></p>
+<h3 id="1-3步骤"><a href="#1-3步骤" class="headerlink" title="1.3步骤"></a>1.3步骤</h3><h4 id="1-3-1设置网络延迟Rules-gt-Customize-Rules"><a href="#1-3-1设置网络延迟Rules-gt-Customize-Rules" class="headerlink" title="1.3.1设置网络延迟Rules-&gt;Customize Rules"></a>1.3.1设置网络延迟Rules-&gt;Customize Rules</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png" alt="img"></p>
+<h4 id="1-3-2启用Rules-gt-Performance-gt-Simulate-Modem-Speeds"><a href="#1-3-2启用Rules-gt-Performance-gt-Simulate-Modem-Speeds" class="headerlink" title="1.3.2启用Rules-&gt;Performance-&gt;Simulate Modem Speeds"></a>1.3.2启用Rules-&gt;Performance-&gt;Simulate Modem Speeds</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img"></p>
+<h4 id="1-3-3手机设置代理连接Fiddler"><a href="#1-3-3手机设置代理连接Fiddler" class="headerlink" title="1.3.3手机设置代理连接Fiddler"></a>1.3.3手机设置代理连接Fiddler</h4><h2 id="二：网络丢包"><a href="#二：网络丢包" class="headerlink" title="二：网络丢包"></a>二：网络丢包</h2><h3 id="2-1介绍"><a href="#2-1介绍" class="headerlink" title="2.1介绍"></a>2.1介绍</h3><p>定义：网络丢包是我们在使用ping对目站进行询问时，数据包由于各种原因在信道中丢失的现象。</p>
+<p>原因：物理线路故障、网络堵塞（路由器资源被大量占用）等等。</p>
+<p>影响：丢包可能造成流媒体技术、VoIP、在线游戏和视频会议的抖动（jittering），并会一定程度上影响到其他的网上应用。要特别注意的是，丢包不一定表示有问题，在某种程度上是有可能被传输双方所接受的。</p>
+<h3 id="2-2工具"><a href="#2-2工具" class="headerlink" title="2.2工具"></a>2.2工具</h3><p>Network Emulation for Windows Toolkit</p>
+<p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" alt="img"></p>
+<h3 id="2-3步骤一（设置电脑网络）"><a href="#2-3步骤一（设置电脑网络）" class="headerlink" title="2.3步骤一（设置电脑网络）"></a>2.3步骤一（设置电脑网络）</h3><h4 id="2-3-1设置电脑网络-Configuration-gt-New-Filter"><a href="#2-3-1设置电脑网络-Configuration-gt-New-Filter" class="headerlink" title="2.3.1设置电脑网络 Configuration-&gt;New Filter"></a>2.3.1设置电脑网络 Configuration-&gt;New Filter</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" alt="img"></p>
+<h4 id="2-3-2点击add新增过滤器"><a href="#2-3-2点击add新增过滤器" class="headerlink" title="2.3.2点击add新增过滤器"></a>2.3.2点击add新增过滤器</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg" alt="img"></p>
+<h4 id="2-3-3-Configuration-gt-New-Link新增链路"><a href="#2-3-3-Configuration-gt-New-Link新增链路" class="headerlink" title="2.3.3 Configuration-&gt;New Link新增链路"></a>2.3.3 Configuration-&gt;New Link新增链路</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg" alt="img"></p>
+<h4 id="2-3-4ping-www-163-com"><a href="#2-3-4ping-www-163-com" class="headerlink" title="2.3.4ping www.163.com"></a>2.3.4ping <a target="_blank" rel="noopener" href="http://www.163.com/">www.163.com</a></h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg" alt="img"></p>
+<h4 id="2-3-5新建链路右键-set-Upstream-x2F-Downstream-random-loss-随机丢包率"><a href="#2-3-5新建链路右键-set-Upstream-x2F-Downstream-random-loss-随机丢包率" class="headerlink" title="2.3.5新建链路右键-set Upstream&#x2F;Downstream-random loss(随机丢包率)"></a>2.3.5新建链路右键-set Upstream&#x2F;Downstream-random loss(随机丢包率)</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg" alt="img"></p>
+<h4 id="2-3-6-Action-gt-Start-ping-www-163-com"><a href="#2-3-6-Action-gt-Start-ping-www-163-com" class="headerlink" title="2.3.6 Action-&gt;Start ping www.163.com"></a>2.3.6 Action-&gt;Start ping <a target="_blank" rel="noopener" href="http://www.163.com/">www.163.com</a></h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image019.png" alt="img"></p>
+<h3 id="2-4步骤二（移动设备接入电脑）"><a href="#2-4步骤二（移动设备接入电脑）" class="headerlink" title="2.4步骤二（移动设备接入电脑）"></a>2.4步骤二（移动设备接入电脑）</h3><h4 id="2-4-1笔记本连接wifi或者网线"><a href="#2-4-1笔记本连接wifi或者网线" class="headerlink" title="2.4.1笔记本连接wifi或者网线"></a>2.4.1笔记本连接wifi或者网线</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image021.jpg" alt="img"></p>
+<h4 id="2-4-2设置-网络和Internet-移动热点（打开）"><a href="#2-4-2设置-网络和Internet-移动热点（打开）" class="headerlink" title="2.4.2设置-网络和Internet-移动热点（打开）"></a>2.4.2设置-网络和Internet-移动热点（打开）</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image023.jpg" alt="img"></p>
+<h4 id="2-4-3更改适配器设置"><a href="#2-4-3更改适配器设置" class="headerlink" title="2.4.3更改适配器设置"></a>2.4.3更改适配器设置</h4><p>选择电脑连接的网络-属性-共享-允许连接-家庭网络连接（本地连接2是笔记本开启的共享）</p>
+<p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image025.jpg" alt="img"></p>
+<h4 id="2-4-4查看手机端是否接入"><a href="#2-4-4查看手机端是否接入" class="headerlink" title="2.4.4查看手机端是否接入"></a>2.4.4查看手机端是否接入</h4>
       
     </div>
 
@@ -232,7 +236,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -298,7 +302,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
