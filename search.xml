@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title></title>
+    <url>/2023/09/11/dasnjinda%20/</url>
+    <content><![CDATA[<h1 id="openkylin"><a href="#openkylin" class="headerlink" title="openkylin"></a>openkylin</h1><h2 id="配置静态ip"><a href="#配置静态ip" class="headerlink" title="配置静态ip"></a>配置静态ip</h2><p>配置静态ip需要三步</p>
+<p>1 配置静态ip地址</p>
+<p>2配置DNS解析</p>
+<p>3重启网络</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"># <span class="number">1</span> 配置静态ip</span><br><span class="line">vim /etc/network/interfaces</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface ens0 inet static</span><br><span class="line"><span class="selector-tag">address</span> <span class="number">192.168</span>.<span class="number">1.114</span> <span class="selector-id">#address</span> ip地址 自定义</span><br><span class="line">network <span class="number">255.255</span>.<span class="number">255.0</span> <span class="selector-id">#network</span> <span class="number">255.255</span>.<span class="number">255.0</span> 一般是固定值</span><br><span class="line">gateway <span class="number">192.168</span>.<span class="number">1.1</span> <span class="selector-id">#gateway</span> 网关 跟物理机的网关保持一致</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># <span class="number">2</span> 配置DNS解析</span><br><span class="line">vim /etc/resolv<span class="selector-class">.conf</span></span><br><span class="line">nameserver <span class="number">8.8</span>.<span class="number">8.8</span></span><br><span class="line">nameserver <span class="number">192.168</span>.<span class="number">1.1</span></span><br><span class="line"></span><br><span class="line"># <span class="number">3</span> 重启网络</span><br><span class="line">service networking restart</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/09/11/Monkey%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="Monkey测试"><a href="#Monkey测试" class="headerlink" title="Monkey测试"></a>Monkey测试</h1><hr>
+<h2 id="原生monkey"><a href="#原生monkey" class="headerlink" title="原生monkey"></a>原生monkey</h2><h3 id="命令："><a href="#命令：" class="headerlink" title="命令："></a>命令：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb shell monkey -p com.pinsmedical.pinslife --throttle 100 -s 999 --pct-touch 50 --pct-motion 50  --ignore-crashes --ignore-timeouts --ignore-security-exceptions --ignore-native-crashes -v -v -v 1000&gt;C:\Users\admin\Desktop\Monkey\log\20230117.log</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="monkey-script"><a href="#monkey-script" class="headerlink" title="monkey script"></a>monkey script</h2><h3 id="命令：-1"><a href="#命令：-1" class="headerlink" title="命令："></a>命令：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">发送到手机</span></span><br><span class="line">adb push C:\Users\admin\Desktop\work\learn\Monkey\MonkeyScript\j3.txt /data/local/tmp</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">执行</span></span><br><span class="line">adb shell monkey -f /data/local/tmp/j3.txt -v-v-v 3 &gt;C:\Users\admin\Desktop\Monkey\log\monkeyscript_log.txt</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="monkey-runner"><a href="#monkey-runner" class="headerlink" title="monkey runner"></a>monkey runner</h2><h3 id="命令：-2"><a href="#命令：-2" class="headerlink" title="命令："></a>命令：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">完全固定操作</span></span><br><span class="line">monkeyrunner C:\Users\admin\Desktop\work\learn\Monkey\Monkeyrunner\monkeyrunner_test.py</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">不完全固定操作</span></span><br><span class="line">monkeyrunner C:\Users\admin\Desktop\work\learn\Monkey\Monkeyrunner\monkeyrunner_test1.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="录制："><a href="#录制：" class="headerlink" title="录制："></a>录制：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">monkeyrunner C:\Users\admin\Downloads\android-sdk-windows\platform-tools\monkey_recorder.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="回放："><a href="#回放：" class="headerlink" title="回放："></a>回放：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">monkeyrunner C:\Users\admin\Desktop\work\learn\Monkey\Monkeyrunner\monkey_playback.py C:\Users\admin\Desktop\work\learn\Monkey\Monkeyrunner\playback</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="maxim"><a href="#maxim" class="headerlink" title="maxim"></a>maxim</h2><h3 id="前置步骤"><a href="#前置步骤" class="headerlink" title="前置步骤:"></a>前置步骤:</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb push framework.jar /sdcard</span><br><span class="line">adb push monkey.jar /sdcard</span><br></pre></td></tr></table></figure>
+
+<h3 id="命令：-3"><a href="#命令：-3" class="headerlink" title="命令："></a>命令：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">mix模式</span></span><br><span class="line">adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.pinsmedical.pinslife --uiautomatormix --running-minutes 1 --throttle 500 -v -v</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">troy模式</span></span><br><span class="line">adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.pinsmedical.pinslife --uiautomatortroy --running-minutes 1 --throttle 500 -v -v</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"> # </span><span class="language-bash">获取xml</span></span><br><span class="line"> adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.api.Dumptree</span><br><span class="line"> adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.api.CurrentActivity</span><br><span class="line"> adb shell dumpsys window w |findstr \/ |findstr name=</span><br></pre></td></tr></table></figure>
+
+<h3 id="白名单（awl-strings）："><a href="#白名单（awl-strings）：" class="headerlink" title="白名单（awl.strings）："></a>白名单（awl.strings）：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">发送到手机上  adb push awl.strings /sdcard</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">命令行添加  --act-whitelist-file /sdcard/awl.strings</span></span><br><span class="line">com.pinsmedical.pinslife.base.CommonFragmentActivity</span><br><span class="line">com.pinsmedical.pinslife.component.home.MainActivity</span><br><span class="line">com.pinsmedical.pinslife.component.inquiry.InquiryListActivity</span><br><span class="line">com.pinsmedical.pinslife.component.inquiry.InquiryMainActivity</span><br><span class="line">com.pinsmedical.pinslife.component.inquiry.InquiryResultActivity</span><br><span class="line">com.pinsmedical.pinslife.component.inquiry.order.InquiryOrderDetailActivity</span><br><span class="line">com.pinsmedical.pinslife.component.myDoctor.DoctorInfoNewActivity</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">对应的也有黑名单abl.strings</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="固定操作-max-xpath-actions-："><a href="#固定操作-max-xpath-actions-：" class="headerlink" title="固定操作(max.xpath.actions)："></a>固定操作(max.xpath.actions)：</h3><figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//编写完成后 adb push max.xpath.actions /sdcard</span></span><br><span class="line"><span class="comment">//踩坑 事件不稳定！切换activity后才能执行，同一activity未实现执行多个event</span></span><br><span class="line"><span class="comment">//注意：首页启动需要延迟一会，否则可能无法找到元素,需要在max.config设置启动后延迟时间</span></span><br><span class="line"><span class="comment">//max.startAfterNSecondsofsleep = 6000</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//复现药品无说明书，点击说明书崩溃</span></span><br><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prob&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;activity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.pinsmedical.pinslife.component.home.MainActivity&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;actions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@resource-id=&#x27;com.pinsmedical.pinslife:id/tv_click3&#x27; and @text=&#x27;续方购药&#x27;]&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;CLICK&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;throttle&quot;</span><span class="punctuation">:</span> <span class="number">2000</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prob&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;activity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.pinsmedical.pinslife.component.buymedicine.ui.BuyMedicineMainActivity&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;actions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@resource-id =&#x27;com.pinsmedical.pinslife:id/nameTv&#x27; and @text=&#x27;[dong22222gaigaigai]哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒结束&#x27;]&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;CLICK&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;throttle&quot;</span><span class="punctuation">:</span> <span class="number">2000</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@class=&#x27;android.widget.TextView&#x27; and @text=&#x27;说明书&#x27;]&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;CLICK&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;throttle&quot;</span><span class="punctuation">:</span> <span class="number">2000</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//点击问医生-伍医生-图文问诊</span></span><br><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prob&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;activity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.pinsmedical.pinslife.component.home.MainActivity&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;actions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@resource-id=&#x27;com.pinsmedical.pinslife:id/tv_click1&#x27; and @text=&#x27;问医生&#x27;]&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;CLICK&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;throttle&quot;</span><span class="punctuation">:</span> <span class="number">1000</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prob&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;activity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.pinsmedical.pinslife.component.inquiry.InquiryMainActivity&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;actions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@resource-id =&#x27;com.pinsmedical.pinslife:id/tv_name&#x27; and @text=&#x27;伍医生&#x27;]&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;CLICK&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;throttle&quot;</span><span class="punctuation">:</span> <span class="number">1000</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prob&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;activity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.pinsmedical.pinslife.component.myDoctor.DoctorInfoNewActivity&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;actions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@resource-id =&#x27;com.pinsmedical.pinslife:id/tv_inquiry_goods_name&#x27; and @text=&#x27;图文问诊&#x27;]&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;action&quot;</span><span class="punctuation">:</span> <span class="string">&quot;CLICK&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;throttle&quot;</span><span class="punctuation">:</span> <span class="number">1000</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="屏蔽区域-max-widget-strings-："><a href="#屏蔽区域-max-widget-strings-：" class="headerlink" title="屏蔽区域(max.widget.strings)："></a>屏蔽区域(max.widget.strings)：</h3><figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//图文问诊流程 禁止点击隐私政策和服务协议</span></span><br><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;activity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.pinsmedical.pinslife.base.CommonFragmentActivity&quot;</span><span class="punctuation">,</span></span><br><span class="line">     <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@resource-id =&#x27;com.pinsmedical.pinslife:id/privacy&#x27; and @text=&#x27;《隐私政策》&#x27;]&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;activity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.pinsmedical.pinslife.base.CommonFragmentActivity&quot;</span><span class="punctuation">,</span></span><br><span class="line">     <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@resource-id =&#x27;com.pinsmedical.pinslife:id/protocol&#x27; and @text=&#x27;《服务协议》&#x27;]&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//首页 禁止点击导航栏</span></span><br><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;activity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;com.pinsmedical.pinslife.component.home.MainActivity&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;bounds&quot;</span><span class="punctuation">:</span> <span class="string">&quot;[0,1175][720,1263]&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="控件优先级-max-xpath-selector）："><a href="#控件优先级-max-xpath-selector）：" class="headerlink" title="控件优先级(max.xpath.selector）："></a>控件优先级(max.xpath.selector）：</h3><figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;firstList&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[contains(@text,&#x27;下一步&#x27;)]&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;selectList&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@clickable=&#x27;true&#x27;]&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@clickable=&#x27;true&#x27;]//*[contains(name(),&#x27;Text&#x27;)]&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@clickable=&#x27;true&#x27;]//*[contains(name(),&#x27;Button&#x27;)]&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[@clickable=&#x27;true&#x27;]//*[contains(name(),&#x27;Image&#x27;)]&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;lastList&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[../*[@selected=&#x27;true&#x27;]]&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[../../*/*[@selected=&#x27;true&#x27;]]&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;xpath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;//*[../../*/*[@selected=&#x27;true&#x27;] and contains(@resource-id,&#x27;tab_&#x27;)]&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义输入-max-strings"><a href="#自定义输入-max-strings" class="headerlink" title="自定义输入(max.strings)"></a>自定义输入(max.strings)</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">需要提前安装ADBKeyBoard</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">max.config需要设置max.randomPickFromStringList = <span class="literal">true</span></span> </span><br><span class="line">伍</span><br><span class="line">伍医生</span><br><span class="line">wu</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="截图，启动配置-max-config）："><a href="#截图，启动配置-max-config）：" class="headerlink" title="截图，启动配置(max.config）："></a>截图，启动配置(max.config）：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">截图</span></span><br><span class="line">max.takeScreenShot = true</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">崩溃时截图：</span></span><br><span class="line">--imagepolling</span><br><span class="line">max.takeScreenShot =True  开启截图  </span><br><span class="line">max.flushImagesThreshold  =50 回溯区间大小xx张  </span><br><span class="line">崩溃截图的生效条件: throttle &gt; 200  &amp;&amp;  max.takeScreenShot = true &amp;&amp;  --imagepolling</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="fastbot"><a href="#fastbot" class="headerlink" title="fastbot"></a>fastbot</h2><h3 id="前置条件："><a href="#前置条件：" class="headerlink" title="前置条件："></a>前置条件：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb push framework.jar fastbot-thirdpart.jar monkeyq.jar /sdcard</span><br><span class="line">adb push libs/*  /data/local/tmp/</span><br></pre></td></tr></table></figure>
+
+<h3 id="命令：-4"><a href="#命令：-4" class="headerlink" title="命令："></a>命令：</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.pinsmedical.pinslife --agent reuseq --running-minutes 30 --throttle 500 -v -v --output-directory /sdcard/monkeypng&gt;C:\Users\admin\Desktop\Monkey\log\monkeylog.txt</span><br><span class="line"></span><br><span class="line">adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.pinsmedical.pinsdoctor --agent reuseq --running-minutes 30 --throttle 500 -v -v --output-directory /sdcard/monkeypng &gt;C:\Users\admin\Desktop\Monkey\log\monkeylog.txt</span><br><span class="line"></span><br><span class="line">adb logcat -c </span><br><span class="line">adb logcat -b main &gt;C:\Users\admin\Desktop\Monkey\log\logcat.txt</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<hr>
+<hr>
+<h1 id="Jenkins集成"><a href="#Jenkins集成" class="headerlink" title="Jenkins集成"></a>Jenkins集成</h1><h2 id="monkey-fastbot"><a href="#monkey-fastbot" class="headerlink" title="monkey_fastbot"></a>monkey_fastbot</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">call </span><br><span class="line">cd C:\Users\admin\Desktop\Monkey</span><br><span class="line">set a=&quot;%device_name%-%date:~0,4%-%date:~5,2%-%date:~8,2% %time:~0,2%-%time:~3,2%-%time:~6,2%&quot;</span><br><span class="line">md %a%</span><br><span class="line">adb logcat -c</span><br><span class="line">start &quot;&quot; cmd /c adb logcat ^&gt;C:\Users\admin\Desktop\Monkey\%a%\logcat.txt</span><br><span class="line">adb -s %device_name% shell settings put global policy_control immersive.full=*</span><br><span class="line">adb -s %device_name% shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p %package% --running-minutes %duration% --throttle %throttle% %white_list% --agent reuseq -v -v -v -v -v --output-directory /sdcard/max-output </span><br><span class="line">adb pull /sdcard/max-output $WORKSPACE</span><br><span class="line">adb pull /sdcard/crash-dump.log $WORKSPACE</span><br><span class="line">adb pull /sdcard/oom-traces.log $WORKSPACE</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="monkey-maxim"><a href="#monkey-maxim" class="headerlink" title="monkey_maxim"></a>monkey_maxim</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">call</span><br><span class="line">cd C:\Users\admin\Desktop\Monkey</span><br><span class="line">set a=&quot;%device_name%-%date:~0,4%-%date:~5,2%-%date:~8,2% %time:~0,2%-%time:~3,2%-%time:~6,2%&quot;</span><br><span class="line">md %a%</span><br><span class="line">adb logcat -c</span><br><span class="line">start &quot;&quot; cmd /c adb logcat ^&gt;C:\Users\admin\Desktop\Monkey\%a%\logcat.txt</span><br><span class="line">adb -s %device_name% shell settings put global policy_control immersive.full=*</span><br><span class="line">adb -s %device_name% shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p %package_name% --running-minutes %duration% --throttle %throttle% %white_list% --uiautomator%model% -v -v -v -v -v  --output-directory /sdcard/max-output</span><br><span class="line">adb pull /sdcard/max-output $WORKSPACE</span><br><span class="line">adb pull /sdcard/crash-dump.log $WORKSPACE</span><br><span class="line">adb pull /sdcard/oom-traces.log $WORKSPACE</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="config"><a href="#config" class="headerlink" title="config"></a>config</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">call</span><br><span class="line">adb -s %device_name%</span><br><span class="line">adb shell rm  /sdcard/max.xpath.actions</span><br><span class="line">adb shell rm  /sdcard/max.xpath.selector</span><br><span class="line">adb shell rm  /sdcard/awl.strings</span><br><span class="line">adb shell rm  /sdcard/max.config</span><br><span class="line">adb shell rm  /sdcard/max.strings</span><br><span class="line">adb shell rm  /sdcard/max.widget.black</span><br><span class="line">exit 0</span><br><span class="line"></span><br><span class="line">call</span><br><span class="line">adb -s %device_name%</span><br><span class="line">adb push C:\Users\admin\Desktop\work\learn\Monkey\config\%action% /sdcard</span><br><span class="line">adb push C:\Users\admin\Desktop\work\learn\Monkey\config\%awl% /sdcard</span><br><span class="line">adb push C:\Users\admin\Desktop\work\learn\Monkey\config\%selector% /sdcard</span><br><span class="line">adb push C:\Users\admin\Desktop\work\learn\Monkey\config\%widget% /sdcard</span><br><span class="line">adb push C:\Users\admin\Desktop\work\learn\Monkey\config\%string% /sdcard</span><br><span class="line">adb push C:\Users\admin\Desktop\work\learn\Monkey\config\%config% /sdcard</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Activity名称"><a href="#Activity名称" class="headerlink" title="Activity名称"></a>Activity名称</h1><h2 id="嘉医有品"><a href="#嘉医有品" class="headerlink" title="嘉医有品"></a>嘉医有品</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">com.pinsmedical.pinslife.component.inquiry.InquiryMainActivity问医生</span><br><span class="line">com.pinsmedical.pinslife.component.inquiry.InquiryListActivity问医生搜索</span><br><span class="line">com.pinsmedical.pinslife.component.inquiry.InquiryResultActivity搜索结果页</span><br><span class="line">com.pinsmedical.pinslife.component.myDoctor.DoctorInfoNewActivity医生详情页</span><br><span class="line">com.pinsmedical.pinslife.base.CommonFragmentActivity问诊过程页</span><br><span class="line">com.pinsmedical.pinslife.component.inquiry.order.InquiryOrderDetailActivity订单详情页</span><br><span class="line">com.pinsmedical.pinslife.component.home.MainActivity主页</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">  adb shell CLASSPATH=/sdcard/monkey.jar:/sdcard/framework.jar exec app_process /system/bin tv.panda.test.monkey.Monkey -p com.pinsmedical.pinslife --uiautomatorapi --running-minutes 10 -v -v -v -v</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">adb devices 查看连接设备</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1、将日志保存在自己的电脑上</span></span><br><span class="line">adb shell monkey -f /sdcard/wdj.txt -v 1 &gt;/存放路径/wdjj.txt</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2、将日志保存在设备上面</span></span><br><span class="line">第一步：adb shell </span><br><span class="line">第二步：root@android:/ # monkey -f /sdcard/wdj.txt -v 1 &gt;/sdcard/wddj.txt</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3、将日志中的标准流与错误流进行分开保存（1&gt;保存的是标准流的日志信息，2&gt;保存的是错误流的日志信息）</span></span><br><span class="line">adb shell monkey -f /sdcard/wdj.txt -v 1 1&gt;/存放路径/right.txt 2&gt;/存放路径/error.txt</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">连接模拟器</span><br><span class="line">adb connect 127.0.0.1:62001</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">adb shell monkey 200 针对手机进行200次随机事件</span><br><span class="line">adb shell monkey -p 包名 200 对某个包进行200次的事件操作</span><br><span class="line"></span><br><span class="line">查看第三方包名</span><br><span class="line">adb shell pm list packages -3  或 abd shell am monitor 或adb shell dumpsys </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">执行中发现了以下问题会结束APP。重新开始启动执行操作，继承次数。日志中记录</span><br><span class="line">--ignore-crashes 崩溃 </span><br><span class="line">--ignore-timeouts  ANR 超时</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">遇到了直接忽略，不报错不记录</span><br><span class="line">--ignore-security-exceptions   安全证书</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> 序列值，种子值 2次monkey命令执行一样的seed值，那么操作流程（点击、滑屏）一致，但是操作对象不一定一致</span><br><span class="line">-s SEED(数字)</span><br><span class="line"></span><br><span class="line">日志级别程度 </span><br><span class="line">-v -v -v</span><br><span class="line"></span><br><span class="line">延迟时间（450ms）</span><br><span class="line">--throttle MILLISEC</span><br><span class="line"></span><br><span class="line">monkey测试结束</span><br><span class="line">monkey finished</span><br><span class="line">1.crash崩溃   logcat日志</span><br><span class="line">2.anr无响应   abd shell  /data/anr/traces.txt</span><br><span class="line">3异常中断</span><br><span class="line"></span><br><span class="line">日志重定向</span><br><span class="line">adb logcat &gt;D:\logcat\logcat_2022-12-3.txt</span><br><span class="line"></span><br><span class="line">记录特定的事件类型</span><br><span class="line">adb logcat -b (radio、main、event)  &gt;D:\logcat\logcat_2022-12-3.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">日志组成：</span><br><span class="line">1时间戳 adb logcat -v time</span><br><span class="line">2优先级</span><br><span class="line">V 开发调试用的</span><br><span class="line">D 调试信息</span><br><span class="line">I info 提示信息</span><br><span class="line">W 警告</span><br><span class="line">E 错误error</span><br><span class="line">3标签（tag)   开发过滤筛选用 例如：ActivityManager</span><br><span class="line">4PID 进程ID</span><br><span class="line">5正文 主体内容</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">adb shell dumpsys window w |findstr \/ |findstr name=</span><br><span class="line">adb shell dumpsys window | findstr mCurrentFocus</span><br><span class="line">am force-stop com.pinsmedical.pinslife</span><br><span class="line"></span><br><span class="line">日志分析：</span><br><span class="line">/data/system/dropbox</span><br><span class="line"></span><br><span class="line"> adb -s emulator-5554 shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p com.pinsmedical.pinslife --agent robot --running-minutes 5 --throttle 800 -v -v</span><br><span class="line"></span><br><span class="line">adb shell settings put global policy_control immersive.full=* 关闭手机的状态栏</span><br><span class="line">adb shell settings put global policy_control null 开启手机状态栏</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">adb shell monkey -p com.pinsmedical.pinslife --throttle 300 -s 999 --pct-touch 50 --pct-motion 50  --ignore-crashes --ignore-timeouts --ignore-security-exceptions --ignore-native-crashes --monitor-native-crashes -v -v -v 1000&gt;C:\Users\admin\Desktop\Monkey\log\20230117.log</span><br><span class="line"></span><br><span class="line">adb shell monkey -p com.pinsmedical.pinsdoctor --throttle 300  --ignore-crashes --ignore-timeouts --ignore-security-exceptions --ignore-native-crashes --monitor-native-crashes -v -v -v 1000&gt;C:\Users\admin\Desktop\Monkey\log\2023011711111.log</span><br><span class="line"></span><br><span class="line">com.pinsmedical.pinsdoctor</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/09/11/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="docker基础学习"><a href="#docker基础学习" class="headerlink" title="docker基础学习"></a>docker基础学习</h1><ol>
+<li><p>初识docker</p>
+<blockquote>
+<p>Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。</p>
+</blockquote>
+<blockquote>
+<p>Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化</p>
+</blockquote>
+</li>
+<li><p>docker的作用</p>
+<p>解决环境迁移的问题，一次打包成镜像，就可以一直复用。</p>
+</li>
+<li><p>docker安装</p>
+<blockquote>
+<p>Docker 要求 CentOS7 系统的内核版本在 3.10以上 ，需要验证CentOS 版本是否支持 Docker 。</p>
+</blockquote>
+<ol>
+<li><p>确定版本号 uname -r</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>升级yum包  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>卸载旧版本 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum remove docker docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装依赖包 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置yum源 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装docker </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y docker-ce </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开机启动 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl start docker  </span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证安装情况 docker version—有client和server</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181356858.png" alt="image-20230718135612819"></p>
+<hr>
+<h1 id="docker使用方法"><a href="#docker使用方法" class="headerlink" title="docker使用方法"></a>docker使用方法</h1><h2 id="核心名词"><a href="#核心名词" class="headerlink" title="核心名词"></a>核心名词</h2><ol>
+<li><p>镜像：包含容器运行的基础文件和配置信息，相当于是一个apk安装包</p>
+</li>
+<li><p>容器：镜像运行的示例，相当于不同手机安装了同一个apk</p>
+</li>
+<li><p>仓库： 储存镜像文件的仓库，相当于应用市场</p>
+</li>
+</ol>
+<pre><code>&gt; docker官方的仓库 https://hub.docker.com/
+</code></pre>
+<h2 id="下载使用"><a href="#下载使用" class="headerlink" title="下载使用"></a>下载使用</h2><p>docker学习使用少不了用第三方的镜像文件，下面是docker下载第三方镜像的原理以及配置加速源的方法。</p>
+<h3 id="下载原理"><a href="#下载原理" class="headerlink" title="下载原理"></a>下载原理</h3><p>​	客户端先去本地的仓库去寻找，找不到就去官方仓库下载到本地仓库。找到就直接使用本地仓库。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181403473.png" alt="image-20230718140324369"></p>
+<h3 id="配置第三方下载渠道"><a href="#配置第三方下载渠道" class="headerlink" title="配置第三方下载渠道"></a>配置第三方下载渠道</h3><ol>
+<li><p>渠道源</p>
+<p>科大镜像：<a href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn/</a></p>
+<p>网易：<a href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com/</a></p>
+<p>七牛云加速器：<a href="https://reg-mirror.qiniu.com/">https://reg-mirror.qiniu.com</a></p>
+</li>
+<li><p>本地配置</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn/&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>3.重新加载配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<p>​			  4. 查看配置是否成功 docker info		</p>
+<p>​				<img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181409942.png" alt="image-20230718140933909"></p>
+<h2 id="docker常用命令"><a href="#docker常用命令" class="headerlink" title="docker常用命令"></a>docker常用命令</h2><h3 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker pull mysql:8.0 拉取镜像文件</span><br><span class="line">docker images 查看本地镜像</span><br><span class="line">docker rmi -f mysql:8.0 删除本地镜像</span><br><span class="line">docker search mysql 查询镜像</span><br><span class="line">docker build </span><br><span class="line">			-t name:version 指定构建镜像的名字和版本</span><br><span class="line">			-f 指定其他文件夹下的DockerFile</span><br></pre></td></tr></table></figure>
+
+<h3 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -x  mysql:8.0  用mysql8.0为镜像做一个容器</span><br><span class="line">            -i 持续运行</span><br><span class="line">            -t 伪终端</span><br><span class="line">            -d 后台运行</span><br><span class="line">            --name x 命名</span><br><span class="line">            -p 81:80 通过宿主机的81端口访问容器的80端口</span><br><span class="line">            -v 虚拟机目录：容器目录  数据卷，也就是虚拟机和容器共享一个内存（一般是一个文件夹）</span><br><span class="line">            -e 指定容器环境变量 TZ=&quot;Asia/Shanghai&quot;设置时区</span><br><span class="line">            --network=host 容器相当于是宿主机中的一个进程，而不是独立的机器，使用bridge，容器和宿主机的地位是平等的</span><br><span class="line">docker logs </span><br><span class="line">            -t 显示时间戳</span><br><span class="line">            --tail =100 显示最近100行的日志 </span><br><span class="line">docker ps 查看运行的容器</span><br><span class="line">docker ps -a 查看所有容器</span><br><span class="line">docker inspect id 查看容器（id）的具体信息</span><br><span class="line">docker stop name 关闭容器</span><br><span class="line">docker start name 开启容器</span><br><span class="line">docker rm name 删除容器</span><br><span class="line">docker exec -it id bash/sh 进入容器中</span><br></pre></td></tr></table></figure>
+
+<h1 id="docker-进阶知识"><a href="#docker-进阶知识" class="headerlink" title="docker 进阶知识"></a>docker 进阶知识</h1><h2 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h2><p>​	1.docker commit（相当于是，开源代码编辑后再次发布）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker commit -m=&quot;描述信息&quot; -a=&quot;作者&quot; id 镜像名称：版本</span><br><span class="line">docker commit -m=&quot;describe&quot; -a=&quot;author&quot; f0c931ce9f33 tomcat-test:1 制作新的tomcat-test镜像</span><br></pre></td></tr></table></figure>
+
+<p>​    2.DockerFile</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">FROM 指定父镜像:  基于哪个镜像image构建  指定基础镜像，必须为第一个命令</span><br><span class="line">MAINTAINER :维护者</span><br><span class="line">RUN: 容器创建的时候执行一段命令   构建镜像时执行的命令</span><br><span class="line">ADD: 将本地文件添加到容器中，tar类型文件会自动解压(网络压缩资源不会被解压)，可以访问网络资源，类似wget</span><br><span class="line">COPY:功能类似ADD，但是是不会自动解压文件，也不能访问网络资源</span><br><span class="line">CMD:构建容器后调用，也就是在容器启动时才进行调用。 .sh执行文件</span><br><span class="line">ENV: 设置环境变量</span><br><span class="line">EXPOSE: 指定于外界交互的端口</span><br><span class="line">VOLUME  用于指定持久化目录</span><br><span class="line">WORKDIR 设置进入容器时的路径 默认访问的目录</span><br><span class="line">ENTRYPOINT 容器启动后执行的命令,让容器执行表现的像一个可执行程序一样,与CMD 的 区 别 是 不 可 以 被 docker run 覆 盖 , 会 把 docker run 后 面 的 参 数 当 作 传 递 给ENTRYPOINT 指令的参数。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">FROM java:8 基于java8运行</span><br><span class="line">MAINTAINER wyt</span><br><span class="line">ENV HOME=/home/deploy 定义环境变量</span><br><span class="line">ENV PORT=7071 定义环境变量</span><br><span class="line">WORKDIR $&#123;HOME&#125; 默认访问路径</span><br><span class="line">VOLUME $&#123;HOME&#125;/log 指定log目录</span><br><span class="line">VOLUME /opt/font 指定字体</span><br><span class="line">RUN mkdir -p /opt/font 创建字体目录</span><br><span class="line">COPY *.jar $&#123;HOME&#125;/app.jar 复制jar包到容器里</span><br><span class="line">EXPOSE 7071 外界交互的端口</span><br><span class="line">ENTRYPOINT java </span><br><span class="line">                -Xms128m -Xmx512m xms初始化堆内存 xmx最大可分配堆内存</span><br><span class="line">                -jar pins-app.jar  运行jar包</span><br><span class="line">                --spring.profiles.active=prod  运行在生产环境，还有test,dev等环境</span><br><span class="line">                --server.port=$&#123;PORT&#125;   运行端口</span><br><span class="line">                --spring.datasource.password=xxxxxxxx 设置数据库密码</span><br><span class="line">                --spring.cloud.nacos.discovery.server-addr=1.1.1.1:8080  指定nacos server地址</span><br><span class="line">                --spring.cloud.nacos.discovery.metadata.version=release 指定生产环境</span><br><span class="line">                --spring.cloud.nacos.config.server-addr=1.1.1.1:8080 nacos配置文件的地址</span><br></pre></td></tr></table></figure>
+
+<p>​		3.docker commpse容器编排技术</p>
+<pre><code>        * 项目层   mysql Redis nginx等一个个容器
+        * 服务层   运行镜像的一个示例
+</code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">version: &quot;3.0&quot;</span><br><span class="line">services:</span><br><span class="line">  mysql: # mysql服务</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    command: --default-authentication-plugin=mysql_native_password #解决外部无法访问</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;3306:3306&quot;      #容器端口映射到宿主机的端口</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_ROOT_PASSWORD: &#x27;root&#x27;</span><br><span class="line">      MYSQL_ALLOW_EMPTY_PASSWORD: &#x27;no&#x27;</span><br><span class="line">      MYSQL_DATABASE: &#x27;mayikt&#x27;</span><br><span class="line">      MYSQL_USER: &#x27;mayikt&#x27;</span><br><span class="line">      MYSQL_PASSWORD: &#x27;mayikt&#x27;</span><br><span class="line">    networks:</span><br><span class="line">      - mayikt_web</span><br><span class="line">  mayikt-web: #自己单独的springboot项目</span><br><span class="line">    hostname: mayikt</span><br><span class="line">    build: ./     #需要构建的Dockerfile文件</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;38000:8080&quot;      #容器端口映射到宿主机的端口</span><br><span class="line">    depends_on:      #web服务依赖mysql服务，要等mysql服务先启动</span><br><span class="line">      - mysql</span><br><span class="line">    networks:</span><br><span class="line">      - mayikt_web</span><br><span class="line">networks:  ## 定义服务的桥</span><br><span class="line">  mayikt_web:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker-compose -h                           # 查看帮助</span><br><span class="line"></span><br><span class="line">docker-compose up                           # 创建并运行所有容器</span><br><span class="line">docker-compose up -d                        # 创建并后台运行所有容器</span><br><span class="line">docker-compose -f docker-compose.yml up -d  # 指定模板</span><br><span class="line">docker-compose down                         # 停止并删除容器、网络、卷、镜像。</span><br><span class="line"></span><br><span class="line">docker-compose logs       # 查看容器输出日志</span><br><span class="line">docker-compose pull       # 拉取依赖镜像</span><br><span class="line">dokcer-compose config     # 检查配置</span><br><span class="line">dokcer-compose config -q  # 检查配置，有问题才有输出</span><br><span class="line"></span><br><span class="line">docker-compose restart   # 重启服务</span><br><span class="line">docker-compose start     # 启动服务</span><br><span class="line">docker-compose stop      # 停止服务</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/09/11/linux%E5%8F%8Abash%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="linux及bash编程"><a href="#linux及bash编程" class="headerlink" title="linux及bash编程"></a>linux及bash编程</h1><h2 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">a=10</span><br><span class="line">b=(1 2 3)</span><br></pre></td></tr></table></figure>
+
+<h2 id="打印输出"><a href="#打印输出" class="headerlink" title="打印输出"></a>打印输出</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo $a</span><br><span class="line">echo $&#123;b[0]&#125; </span><br><span class="line">echo $&#123;b[*]&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="bash编程（严格控制空格）"><a href="#bash编程（严格控制空格）" class="headerlink" title="bash编程（严格控制空格）"></a>bash编程（严格控制空格）</h2><h3 id="if、for、while"><a href="#if、for、while" class="headerlink" title="if、for、while"></a>if、for、while</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="keyword">if</span>判断-----<span class="keyword">if</span>开头，<span class="keyword">fi</span>结尾</span></span><br><span class="line">if [ $a -eq $b ];then echo &quot;equal&quot;;elif [ $a -gt $b ];then echo &quot;big&quot;;else echo &quot;small&quot;;fi</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="keyword">for</span>循环</span></span><br><span class="line">for i in $(cat test.txt);do echo $i;done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="keyword">while</span>循环</span></span><br><span class="line">while read i; do echo $i ; done &lt; test.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">a=10 b=20</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">加减乘除</span></span><br><span class="line">echo `expr $a + $b`</span><br><span class="line">echo `expr $a + $b`</span><br><span class="line">echo `expr $a \* $b`</span><br><span class="line">echo `expr $a / $b`</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">取余、赋值、相等、不相等</span></span><br><span class="line">echo `expr $a % $b` 30%20=1余10</span><br><span class="line">a=$b</span><br><span class="line">[ $a == $b ]</span><br><span class="line">[ $a != $b ]</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">相等、不相等、大于、小于、大于等于、小于等于</span></span><br><span class="line">[ $a -eq $b ]</span><br><span class="line">[ $a -ne $b ]</span><br><span class="line">[ $a -gt $b ] #大于</span><br><span class="line">[ $a -lt $b ]</span><br><span class="line">[ $a -ge $b ]#大于等于</span><br><span class="line">[ $a -le $b ]</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Picasso <span class="title function_">with</span><span class="params">(Context context)</span> &#123;    <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;      <span class="keyword">synchronized</span> (Picasso.class) &#123;        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;          singleton = <span class="keyword">new</span> <span class="title class_">Builder</span>(context).build();        &#125;      &#125;    &#125;    <span class="keyword">return</span> singleton;  &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /  #切换到根目录</span><br><span class="line">cd /home #切换到home目录（在根目录下需要带/，非根目录下直接cd 目录名称即可）</span><br><span class="line">ls #横向列出目录</span><br><span class="line">ll #竖向列出目录</span><br><span class="line">pwd #显示当前目录</span><br><span class="line">mkdir wu#创建wu文件夹</span><br><span class="line">rm -rf wu#删除wu文件夹</span><br><span class="line">rm -rf test.txt#删除test.txt</span><br><span class="line">cp /home/test.txt /opt #把home下的test复制到opt目录</span><br><span class="line">mv /home/test.txt /opt#把home下的test移动到opt目录</span><br><span class="line">tar -xzvf documents.tar.gz#解压</span><br><span class="line">unzip documents.zip#解压</span><br><span class="line">apt-get install unzip#下载unzip</span><br><span class="line">vim test.txt#编辑文件</span><br><span class="line">	键入i：进入编辑模式</span><br><span class="line">	键入ESC：进行最后一行模式（退出编辑前的必须步骤）</span><br><span class="line"><span class="meta prompt_">	#</span><span class="language-bash">进入最后一行模式时，可以进行下面的操作</span></span><br><span class="line">	键入[:wq]:保存并退出</span><br><span class="line">	键入[:q!]：不保存并退出</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307201733696.png"></p>
+<h1 id="常见命令-1"><a href="#常见命令-1" class="headerlink" title="常见命令"></a>常见命令</h1><h1 id><a href="#" class="headerlink" title></a></h1>]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/09/11/maven%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h1 id="maven学习"><a href="#maven学习" class="headerlink" title="maven学习"></a>maven学习</h1><hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote>
+<p>Maven 是 Apache 软件基金会的一个开源项目,是一个优秀的项目构建工具,它用来帮助开发者管理项目中的 jar,以及 jar 之间的依赖关系、完成项目的编译、测试、打包和发布等工作。</p>
+</blockquote>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>maven的作用有点像docker,可以把这个jar包保存在本地仓库，需要的时候直接引用就好，没有的jar包会自动联网下载。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="官网下载（https-maven-apache-org-download-cgi）"><a href="#官网下载（https-maven-apache-org-download-cgi）" class="headerlink" title="官网下载（https://maven.apache.org/download.cgi）"></a>官网下载（<a href="https://maven.apache.org/download.cgi%EF%BC%89">https://maven.apache.org/download.cgi）</a></h3><p><img src="C:/Users/admin/AppData/Roaming/Typora/typora-user-images/image-20230721103514070.png" alt="image-20230721103514070"></p>
+<h3 id="解压并设置环境变量"><a href="#解压并设置环境变量" class="headerlink" title="解压并设置环境变量"></a>解压并设置环境变量</h3><ol>
+<li>path添加xxx\maven-3.9.3\bin</li>
+<li>mvn -version</li>
+</ol>
+<p>至此，安装完成。</p>
+<hr>
+<h2 id="配置本地仓库和镜像"><a href="#配置本地仓库和镜像" class="headerlink" title="配置本地仓库和镜像"></a>配置本地仓库和镜像</h2><pre><code> 1. 打开xxx\maven-3.9.3\conf\settings.xml
+ 2. 配置本地仓库
+</code></pre>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">localRepository</span>&gt;</span>xx\maven-3.9.3\localrepository<span class="tag">&lt;/<span class="name">localRepository</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>   3.配置镜像源</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span>   <span class="comment">&lt;!-- 配置阿里云镜像仓库 --&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">id</span>&gt;</span>alimaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">name</span>&gt;</span>aliyun maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="IDEA配置maven"><a href="#IDEA配置maven" class="headerlink" title="IDEA配置maven"></a>IDEA配置maven</h2><p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211050805.png" alt="image-20230721105009728"></p>
+<hr>
+<h2 id="pom-xml-http-mvnrepository-com"><a href="#pom-xml-http-mvnrepository-com" class="headerlink" title="pom.xml(http://mvnrepository.com/)"></a>pom.xml(<a href="http://mvnrepository.com/">http://mvnrepository.com/</a>)</h2><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><blockquote>
+<p>pom是maven的组件，以xml的形式存放在根目录，定义了项目的基本信息、构建、声明项目依赖</p>
+</blockquote>
+<h3 id="具体内容"><a href="#具体内容" class="headerlink" title="具体内容"></a>具体内容</h3><ul>
+<li>项目依赖</li>
+<li>插件</li>
+<li>目标</li>
+<li>构建的配置文件</li>
+<li>版本</li>
+<li>开发者</li>
+<li>邮件列表</li>
+</ul>
+<h3 id="maven坐标"><a href="#maven坐标" class="headerlink" title="maven坐标"></a>maven坐标</h3><ul>
+<li>groupId： 项目组 ID，定义当前 Maven 项目隶属的组织或公司，通常是唯一的。它的取值一般是项目所属公司或组织的网址或 URL 的反写</li>
+<li>artifactId： 项目 ID，通常是项目的名称</li>
+<li>version：版本</li>
+<li>packaging：项目的打包方式，默认值为 jar</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211110800.png" alt="image-20230721111003733"></p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>在pom.xml设置完坐标后，点击IDEA的maven刷新按钮即可安装包</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211113268.png" alt="image-20230721111352201"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/09/11/nacos/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/09/11/redis%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h1 id="rides学习记录"><a href="#rides学习记录" class="headerlink" title="rides学习记录"></a>rides学习记录</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote>
+<p>redis是一个key-value存储系统。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)和zset(有序集合)。这些数据类型都支持push&#x2F;pop、add&#x2F;remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。在此基础上，redis支持各种不同方式的排序。与memcached一样，为了保证效率，数据都是缓存在内存中。区别的是redis会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了master-slave(主从)同步</p>
+</blockquote>
+<h2 id="安装（https-redis-io-download-）"><a href="#安装（https-redis-io-download-）" class="headerlink" title="安装（https://redis.io/download/）"></a>安装（<a href="https://redis.io/download/%EF%BC%89">https://redis.io/download/）</a></h2><p>1.下载</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211122032.png" alt="image-20230721112243988"></p>
+<p>2.linux下载redis的依赖</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y gcc tcl gcc-c++ make</span><br></pre></td></tr></table></figure>
+
+<p>3.解压安装文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">windows把文件传到linux上---！！！windows的cmd执行</span></span><br><span class="line">scp xxx\redis-7.0.12.tar.gz root@ip地址:/usr/local/src/</span><br><span class="line">tar -zxvf redis-7.0.12.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>4.进入并安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd redis-7.0.12/</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307211143441.png"></p>
+<p>5.启动</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">redis-server：redis 的服务端启动脚本</span><br><span class="line">redis-cli：redis 提供的客户端启动脚本</span><br><span class="line">redis-sentinel：redis 提供的哨兵启动脚本</span><br><span class="line">redis-benchmark：性能测试工具，可以在自己电脑上运行来查看性能</span><br><span class="line">redis-check-aof：修复有问题的AOF文件</span><br><span class="line">redis-check-dump：修复有问题的dump.rdb文件</span><br></pre></td></tr></table></figure>
+
+<p>6.修改配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /usr/local/src/redis-7.0.12/</span><br><span class="line">cp redis.conf /etc</span><br><span class="line">cd /etc</span><br><span class="line">修改redis.conf的daemonize为yes</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>docker学习记录</title>
+    <url>/2021/02/14/test-blog/</url>
+    <content><![CDATA[<h1 id="docker基础学习"><a href="#docker基础学习" class="headerlink" title="docker基础学习"></a>docker基础学习</h1><ol>
+<li><p>初识docker</p>
+<blockquote>
+<p>Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。</p>
+</blockquote>
+<blockquote>
+<p>Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化</p>
+</blockquote>
+</li>
+<li><p>docker的作用</p>
+<p>解决环境迁移的问题，一次打包成镜像，就可以一直复用。</p>
+</li>
+</ol>
+<!--- more --->   //这个的上面是可以显示的，下面是不能显示的，要通过阅读全文才可以进入查看到
+
+
+<ol start="3">
+<li><p>docker安装</p>
+<blockquote>
+<p>Docker 要求 CentOS7 系统的内核版本在 3.10以上 ，需要验证CentOS 版本是否支持 Docker 。</p>
+</blockquote>
+<ol>
+<li><p>确定版本号 uname -r</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>升级yum包  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>卸载旧版本 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum remove docker docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装依赖包 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置yum源 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装docker </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y docker-ce </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开机启动 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl start docker  </span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证安装情况 docker version—有client和server</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181356858.png" alt="image-20230718135612819"></p>
+<hr>
+<h1 id="docker使用方法"><a href="#docker使用方法" class="headerlink" title="docker使用方法"></a>docker使用方法</h1><h2 id="核心名词"><a href="#核心名词" class="headerlink" title="核心名词"></a>核心名词</h2><ol>
+<li><p>镜像：包含容器运行的基础文件和配置信息，相当于是一个apk安装包</p>
+</li>
+<li><p>容器：镜像运行的示例，相当于不同手机安装了同一个apk</p>
+</li>
+<li><p>仓库： 储存镜像文件的仓库，相当于应用市场</p>
+</li>
+</ol>
+<pre><code>&gt; docker官方的仓库 https://hub.docker.com/
+</code></pre>
+<h2 id="下载使用"><a href="#下载使用" class="headerlink" title="下载使用"></a>下载使用</h2><p>docker学习使用少不了用第三方的镜像文件，下面是docker下载第三方镜像的原理以及配置加速源的方法。</p>
+<h3 id="下载原理"><a href="#下载原理" class="headerlink" title="下载原理"></a>下载原理</h3><p>​	客户端先去本地的仓库去寻找，找不到就去官方仓库下载到本地仓库。找到就直接使用本地仓库。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181403473.png" alt="image-20230718140324369"></p>
+<h3 id="配置第三方下载渠道"><a href="#配置第三方下载渠道" class="headerlink" title="配置第三方下载渠道"></a>配置第三方下载渠道</h3><ol>
+<li><p>渠道源</p>
+<p>科大镜像：<a href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn/</a></p>
+<p>网易：<a href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com/</a></p>
+<p>七牛云加速器：<a href="https://reg-mirror.qiniu.com/">https://reg-mirror.qiniu.com</a></p>
+</li>
+<li><p>本地配置</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn/&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>3.重新加载配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<p>​			  4. 查看配置是否成功 docker info		</p>
+<p>​				<img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181409942.png" alt="image-20230718140933909"></p>
+<h2 id="docker常用命令"><a href="#docker常用命令" class="headerlink" title="docker常用命令"></a>docker常用命令</h2><h3 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker pull mysql:8.0 拉取镜像文件</span><br><span class="line">docker images 查看本地镜像</span><br><span class="line">docker rmi -f mysql:8.0 删除本地镜像</span><br><span class="line">docker search mysql 查询镜像</span><br><span class="line">docker build </span><br><span class="line">			-t name:version 指定构建镜像的名字和版本</span><br><span class="line">			-f 指定其他文件夹下的DockerFile</span><br></pre></td></tr></table></figure>
+
+<h3 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -x  mysql:8.0  用mysql8.0为镜像做一个容器</span><br><span class="line">            -i 持续运行</span><br><span class="line">            -t 伪终端</span><br><span class="line">            -d 后台运行</span><br><span class="line">            --name x 命名</span><br><span class="line">            -p 81:80 通过宿主机的81端口访问容器的80端口</span><br><span class="line">            -v 虚拟机目录：容器目录  数据卷，也就是虚拟机和容器共享一个内存（一般是一个文件夹）</span><br><span class="line">            -e 指定容器环境变量 TZ=&quot;Asia/Shanghai&quot;设置时区</span><br><span class="line">            --network=host 容器相当于是宿主机中的一个进程，而不是独立的机器，使用bridge，容器和宿主机的地位是平等的</span><br><span class="line">docker logs </span><br><span class="line">            -t 显示时间戳</span><br><span class="line">            --tail =100 显示最近100行的日志 </span><br><span class="line">docker ps 查看运行的容器</span><br><span class="line">docker ps -a 查看所有容器</span><br><span class="line">docker inspect id 查看容器（id）的具体信息</span><br><span class="line">docker stop name 关闭容器</span><br><span class="line">docker start name 开启容器</span><br><span class="line">docker rm name 删除容器</span><br><span class="line">docker exec -it id bash/sh 进入容器中</span><br></pre></td></tr></table></figure>
+
+<h1 id="docker-进阶知识"><a href="#docker-进阶知识" class="headerlink" title="docker 进阶知识"></a>docker 进阶知识</h1><h2 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h2><p>​	1.docker commit（相当于是，开源代码编辑后再次发布）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker commit -m=&quot;描述信息&quot; -a=&quot;作者&quot; id 镜像名称：版本</span><br><span class="line">docker commit -m=&quot;describe&quot; -a=&quot;author&quot; f0c931ce9f33 tomcat-test:1 制作新的tomcat-test镜像</span><br></pre></td></tr></table></figure>
+
+<p>​    2.DockerFile</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">FROM 指定父镜像:  基于哪个镜像image构建  指定基础镜像，必须为第一个命令</span><br><span class="line">MAINTAINER :维护者</span><br><span class="line">RUN: 容器创建的时候执行一段命令   构建镜像时执行的命令</span><br><span class="line">ADD: 将本地文件添加到容器中，tar类型文件会自动解压(网络压缩资源不会被解压)，可以访问网络资源，类似wget</span><br><span class="line">COPY:功能类似ADD，但是是不会自动解压文件，也不能访问网络资源</span><br><span class="line">CMD:构建容器后调用，也就是在容器启动时才进行调用。 .sh执行文件</span><br><span class="line">ENV: 设置环境变量</span><br><span class="line">EXPOSE: 指定于外界交互的端口</span><br><span class="line">VOLUME  用于指定持久化目录</span><br><span class="line">WORKDIR 设置进入容器时的路径 默认访问的目录</span><br><span class="line">ENTRYPOINT 容器启动后执行的命令,让容器执行表现的像一个可执行程序一样,与CMD 的 区 别 是 不 可 以 被 docker run 覆 盖 , 会 把 docker run 后 面 的 参 数 当 作 传 递 给ENTRYPOINT 指令的参数。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">FROM java:8 基于java8运行</span><br><span class="line">MAINTAINER wyt</span><br><span class="line">ENV HOME=/home/deploy 定义环境变量</span><br><span class="line">ENV PORT=7071 定义环境变量</span><br><span class="line">WORKDIR $&#123;HOME&#125; 默认访问路径</span><br><span class="line">VOLUME $&#123;HOME&#125;/log 指定log目录</span><br><span class="line">VOLUME /opt/font 指定字体</span><br><span class="line">RUN mkdir -p /opt/font 创建字体目录</span><br><span class="line">COPY *.jar $&#123;HOME&#125;/app.jar 复制jar包到容器里</span><br><span class="line">EXPOSE 7071 外界交互的端口</span><br><span class="line">ENTRYPOINT java </span><br><span class="line">                -Xms128m -Xmx512m xms初始化堆内存 xmx最大可分配堆内存</span><br><span class="line">                -jar pins-app.jar  运行jar包</span><br><span class="line">                --spring.profiles.active=prod  运行在生产环境，还有test,dev等环境</span><br><span class="line">                --server.port=$&#123;PORT&#125;   运行端口</span><br><span class="line">                --spring.datasource.password=xxxxxxxx 设置数据库密码</span><br><span class="line">                --spring.cloud.nacos.discovery.server-addr=1.1.1.1:8080  指定nacos server地址</span><br><span class="line">                --spring.cloud.nacos.discovery.metadata.version=release 指定生产环境</span><br><span class="line">                --spring.cloud.nacos.config.server-addr=1.1.1.1:8080 nacos配置文件的地址</span><br></pre></td></tr></table></figure>
+
+<p>​		3.docker commpse容器编排技术</p>
+<pre><code>        * 项目层   mysql Redis nginx等一个个容器
+        * 服务层   运行镜像的一个示例
+</code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">version: &quot;3.0&quot;</span><br><span class="line">services:</span><br><span class="line">  mysql: # mysql服务</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    command: --default-authentication-plugin=mysql_native_password #解决外部无法访问</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;3306:3306&quot;      #容器端口映射到宿主机的端口</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_ROOT_PASSWORD: &#x27;root&#x27;</span><br><span class="line">      MYSQL_ALLOW_EMPTY_PASSWORD: &#x27;no&#x27;</span><br><span class="line">      MYSQL_DATABASE: &#x27;mayikt&#x27;</span><br><span class="line">      MYSQL_USER: &#x27;mayikt&#x27;</span><br><span class="line">      MYSQL_PASSWORD: &#x27;mayikt&#x27;</span><br><span class="line">    networks:</span><br><span class="line">      - mayikt_web</span><br><span class="line">  mayikt-web: #自己单独的springboot项目</span><br><span class="line">    hostname: mayikt</span><br><span class="line">    build: ./     #需要构建的Dockerfile文件</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;38000:8080&quot;      #容器端口映射到宿主机的端口</span><br><span class="line">    depends_on:      #web服务依赖mysql服务，要等mysql服务先启动</span><br><span class="line">      - mysql</span><br><span class="line">    networks:</span><br><span class="line">      - mayikt_web</span><br><span class="line">networks:  ## 定义服务的桥</span><br><span class="line">  mayikt_web:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker-compose -h                           # 查看帮助</span><br><span class="line"></span><br><span class="line">docker-compose up                           # 创建并运行所有容器</span><br><span class="line">docker-compose up -d                        # 创建并后台运行所有容器</span><br><span class="line">docker-compose -f docker-compose.yml up -d  # 指定模板</span><br><span class="line">docker-compose down                         # 停止并删除容器、网络、卷、镜像。</span><br><span class="line"></span><br><span class="line">docker-compose logs       # 查看容器输出日志</span><br><span class="line">docker-compose pull       # 拉取依赖镜像</span><br><span class="line">dokcer-compose config     # 检查配置</span><br><span class="line">dokcer-compose config -q  # 检查配置，有问题才有输出</span><br><span class="line"></span><br><span class="line">docker-compose restart   # 重启服务</span><br><span class="line">docker-compose start     # 启动服务</span><br><span class="line">docker-compose stop      # 停止服务</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>测试分类</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/09/11/%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h1 id="弱网测试"><a href="#弱网测试" class="headerlink" title="弱网测试"></a>弱网测试</h1><h2 id="一：网络延迟"><a href="#一：网络延迟" class="headerlink" title="一：网络延迟"></a>一：网络延迟</h2><h3 id="1-1介绍"><a href="#1-1介绍" class="headerlink" title="1.1介绍"></a>1.1介绍</h3><p>定义：网络延迟是指各式各样的<a href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE/5947370?fromModule=lemma_inlink">数据</a>在<a href="https://baike.baidu.com/item/%E7%BD%91%E7%BB%9C%E4%BB%8B%E8%B4%A8/6915733?fromModule=lemma_inlink">网络介质</a>中通过<a href="https://baike.baidu.com/item/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/328636?fromModule=lemma_inlink">网络协议</a>(TCP&#x2F;IP)进行传输，如果<a href="https://baike.baidu.com/item/%E4%BF%A1%E6%81%AF%E9%87%8F/420401?fromModule=lemma_inlink">信息量</a>过大不加以限制，超额的<a href="https://baike.baidu.com/item/%E7%BD%91%E7%BB%9C%E6%B5%81%E9%87%8F/7489548?fromModule=lemma_inlink">网络流量</a>就会导致设备反应缓慢，造成网络延迟</p>
+<p>原因：带宽不足、本机到服务器之间路由过多</p>
+<p>影响：</p>
+<p><img src="/2023/09/11/%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88/_posts/%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88/clip_image002.jpg"></p>
+
+
+<h3 id="1-2工具"><a href="#1-2工具" class="headerlink" title="1.2工具"></a>1.2工具</h3><p>Fiddler</p>
+<p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image003.png" alt="img"></p>
+<h3 id="1-3步骤"><a href="#1-3步骤" class="headerlink" title="1.3步骤"></a>1.3步骤</h3><h4 id="1-3-1设置网络延迟Rules-gt-Customize-Rules"><a href="#1-3-1设置网络延迟Rules-gt-Customize-Rules" class="headerlink" title="1.3.1设置网络延迟Rules-&gt;Customize Rules"></a>1.3.1设置网络延迟Rules-&gt;Customize Rules</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png" alt="img"></p>
+<h4 id="1-3-2启用Rules-gt-Performance-gt-Simulate-Modem-Speeds"><a href="#1-3-2启用Rules-gt-Performance-gt-Simulate-Modem-Speeds" class="headerlink" title="1.3.2启用Rules-&gt;Performance-&gt;Simulate Modem Speeds"></a>1.3.2启用Rules-&gt;Performance-&gt;Simulate Modem Speeds</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img"></p>
+<h4 id="1-3-3手机设置代理连接Fiddler"><a href="#1-3-3手机设置代理连接Fiddler" class="headerlink" title="1.3.3手机设置代理连接Fiddler"></a>1.3.3手机设置代理连接Fiddler</h4><h2 id="二：网络丢包"><a href="#二：网络丢包" class="headerlink" title="二：网络丢包"></a>二：网络丢包</h2><h3 id="2-1介绍"><a href="#2-1介绍" class="headerlink" title="2.1介绍"></a>2.1介绍</h3><p>定义：网络丢包是我们在使用ping对目站进行询问时，数据包由于各种原因在信道中丢失的现象。</p>
+<p>原因：物理线路故障、网络堵塞（路由器资源被大量占用）等等。</p>
+<p>影响：丢包可能造成流媒体技术、VoIP、在线游戏和视频会议的抖动（jittering），并会一定程度上影响到其他的网上应用。要特别注意的是，丢包不一定表示有问题，在某种程度上是有可能被传输双方所接受的。</p>
+<h3 id="2-2工具"><a href="#2-2工具" class="headerlink" title="2.2工具"></a>2.2工具</h3><p>Network Emulation for Windows Toolkit</p>
+<p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" alt="img"></p>
+<h3 id="2-3步骤一（设置电脑网络）"><a href="#2-3步骤一（设置电脑网络）" class="headerlink" title="2.3步骤一（设置电脑网络）"></a>2.3步骤一（设置电脑网络）</h3><h4 id="2-3-1设置电脑网络-Configuration-gt-New-Filter"><a href="#2-3-1设置电脑网络-Configuration-gt-New-Filter" class="headerlink" title="2.3.1设置电脑网络 Configuration-&gt;New Filter"></a>2.3.1设置电脑网络 Configuration-&gt;New Filter</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" alt="img"></p>
+<h4 id="2-3-2点击add新增过滤器"><a href="#2-3-2点击add新增过滤器" class="headerlink" title="2.3.2点击add新增过滤器"></a>2.3.2点击add新增过滤器</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg" alt="img"></p>
+<h4 id="2-3-3-Configuration-gt-New-Link新增链路"><a href="#2-3-3-Configuration-gt-New-Link新增链路" class="headerlink" title="2.3.3 Configuration-&gt;New Link新增链路"></a>2.3.3 Configuration-&gt;New Link新增链路</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg" alt="img"></p>
+<h4 id="2-3-4ping-www-163-com"><a href="#2-3-4ping-www-163-com" class="headerlink" title="2.3.4ping www.163.com"></a>2.3.4ping <a href="http://www.163.com/">www.163.com</a></h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg" alt="img"></p>
+<h4 id="2-3-5新建链路右键-set-Upstream-x2F-Downstream-random-loss-随机丢包率"><a href="#2-3-5新建链路右键-set-Upstream-x2F-Downstream-random-loss-随机丢包率" class="headerlink" title="2.3.5新建链路右键-set Upstream&#x2F;Downstream-random loss(随机丢包率)"></a>2.3.5新建链路右键-set Upstream&#x2F;Downstream-random loss(随机丢包率)</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg" alt="img"></p>
+<h4 id="2-3-6-Action-gt-Start-ping-www-163-com"><a href="#2-3-6-Action-gt-Start-ping-www-163-com" class="headerlink" title="2.3.6 Action-&gt;Start ping www.163.com"></a>2.3.6 Action-&gt;Start ping <a href="http://www.163.com/">www.163.com</a></h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image019.png" alt="img"></p>
+<h3 id="2-4步骤二（移动设备接入电脑）"><a href="#2-4步骤二（移动设备接入电脑）" class="headerlink" title="2.4步骤二（移动设备接入电脑）"></a>2.4步骤二（移动设备接入电脑）</h3><h4 id="2-4-1笔记本连接wifi或者网线"><a href="#2-4-1笔记本连接wifi或者网线" class="headerlink" title="2.4.1笔记本连接wifi或者网线"></a>2.4.1笔记本连接wifi或者网线</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image021.jpg" alt="img"></p>
+<h4 id="2-4-2设置-网络和Internet-移动热点（打开）"><a href="#2-4-2设置-网络和Internet-移动热点（打开）" class="headerlink" title="2.4.2设置-网络和Internet-移动热点（打开）"></a>2.4.2设置-网络和Internet-移动热点（打开）</h4><p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image023.jpg" alt="img"></p>
+<h4 id="2-4-3更改适配器设置"><a href="#2-4-3更改适配器设置" class="headerlink" title="2.4.3更改适配器设置"></a>2.4.3更改适配器设置</h4><p>选择电脑连接的网络-属性-共享-允许连接-家庭网络连接（本地连接2是笔记本开启的共享）</p>
+<p><img src="file:///C:/Users/admin/AppData/Local/Temp/msohtmlclip1/01/clip_image025.jpg" alt="img"></p>
+<h4 id="2-4-4查看手机端是否接入"><a href="#2-4-4查看手机端是否接入" class="headerlink" title="2.4.4查看手机端是否接入"></a>2.4.4查看手机端是否接入</h4>]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/09/11/%E8%BF%90%E7%BB%B4%E4%B9%8B%E8%99%9A%E6%8B%9F%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="openkylin"><a href="#openkylin" class="headerlink" title="openkylin"></a>openkylin</h1><h2 id="配置静态ip"><a href="#配置静态ip" class="headerlink" title="配置静态ip"></a>配置静态ip</h2><p>配置静态ip需要三步</p>
+<p>1 配置静态ip地址</p>
+<p>2配置DNS解析</p>
+<p>3重启网络</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"># <span class="number">1</span> 配置静态ip</span><br><span class="line">vim /etc/network/interfaces</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface ens0 inet static</span><br><span class="line"><span class="selector-tag">address</span> <span class="number">192.168</span>.<span class="number">1.114</span> <span class="selector-id">#address</span> ip地址 自定义</span><br><span class="line">network <span class="number">255.255</span>.<span class="number">255.0</span> <span class="selector-id">#network</span> <span class="number">255.255</span>.<span class="number">255.0</span> 一般是固定值</span><br><span class="line">gateway <span class="number">192.168</span>.<span class="number">1.1</span> <span class="selector-id">#gateway</span> 网关 跟物理机的网关保持一致</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># <span class="number">2</span> 配置DNS解析</span><br><span class="line">vim /etc/resolv<span class="selector-class">.conf</span></span><br><span class="line">nameserver <span class="number">8.8</span>.<span class="number">8.8</span></span><br><span class="line">nameserver <span class="number">192.168</span>.<span class="number">1.1</span></span><br><span class="line"></span><br><span class="line"># <span class="number">3</span> 重启网络</span><br><span class="line">service networking restart</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+  </entry>
+</search>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":50,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="docker基础学习 初识docker  Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。   Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化   docker的作用 解决环境迁移的问题，一次打包成镜像，就可以一直复用。      &#x2F;&#x2F;这个的上面是可以显示的，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker学习记录">
+<meta property="og:url" content="http://example.com/2021/02/14/test-blog/index.html">
+<meta property="og:site_name" content="风的博客">
+<meta property="og:description" content="docker基础学习 初识docker  Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。   Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化   docker的作用 解决环境迁移的问题，一次打包成镜像，就可以一直复用。      &#x2F;&#x2F;这个的上面是可以显示的，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181356858.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181403473.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181409942.png">
+<meta property="article:published_time" content="2021-02-14T05:49:27.000Z">
+<meta property="article:modified_time" content="2023-09-12T14:34:14.171Z">
+<meta property="article:author" content="阳停">
+<meta property="article:tag" content="生活">
+<meta property="article:tag" content="学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181356858.png">
+
+<link rel="canonical" href="http://example.com/2021/02/14/test-blog/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>docker学习记录 | 风的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/14/test-blog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="阳停">
+      <meta itemprop="description" content="个人学习成长记录">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          docker学习记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-14 13:49:27" itemprop="dateCreated datePublished" datetime="2021-02-14T13:49:27+08:00">2021-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-12 22:34:14" itemprop="dateModified" datetime="2023-09-12T22:34:14+08:00">2023-09-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%8B%E8%AF%95%E5%88%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">测试分类</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="docker基础学习"><a href="#docker基础学习" class="headerlink" title="docker基础学习"></a>docker基础学习</h1><ol>
+<li><p>初识docker</p>
+<blockquote>
+<p>Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。</p>
+</blockquote>
+<blockquote>
+<p>Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化</p>
+</blockquote>
+</li>
+<li><p>docker的作用</p>
+<p>解决环境迁移的问题，一次打包成镜像，就可以一直复用。</p>
+</li>
+</ol>
+<!--- more --->   //这个的上面是可以显示的，下面是不能显示的，要通过阅读全文才可以进入查看到
+
+
+<ol start="3">
+<li><p>docker安装</p>
+<blockquote>
+<p>Docker 要求 CentOS7 系统的内核版本在 3.10以上 ，需要验证CentOS 版本是否支持 Docker 。</p>
+</blockquote>
+<ol>
+<li><p>确定版本号 uname -r</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>升级yum包  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>卸载旧版本 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove docker docker-common docker-selinux docker-engine</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装依赖包 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置yum源 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装docker </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y docker-ce </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开机启动 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker  </span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证安装情况 docker version—有client和server</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181356858.png" alt="image-20230718135612819"></p>
+<hr>
+<h1 id="docker使用方法"><a href="#docker使用方法" class="headerlink" title="docker使用方法"></a>docker使用方法</h1><h2 id="核心名词"><a href="#核心名词" class="headerlink" title="核心名词"></a>核心名词</h2><ol>
+<li><p>镜像：包含容器运行的基础文件和配置信息，相当于是一个apk安装包</p>
+</li>
+<li><p>容器：镜像运行的示例，相当于不同手机安装了同一个apk</p>
+</li>
+<li><p>仓库： 储存镜像文件的仓库，相当于应用市场</p>
+</li>
+</ol>
+<pre><code>&gt; docker官方的仓库 https://hub.docker.com/
+</code></pre>
+<h2 id="下载使用"><a href="#下载使用" class="headerlink" title="下载使用"></a>下载使用</h2><p>docker学习使用少不了用第三方的镜像文件，下面是docker下载第三方镜像的原理以及配置加速源的方法。</p>
+<h3 id="下载原理"><a href="#下载原理" class="headerlink" title="下载原理"></a>下载原理</h3><p>​	客户端先去本地的仓库去寻找，找不到就去官方仓库下载到本地仓库。找到就直接使用本地仓库。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181403473.png" alt="image-20230718140324369"></p>
+<h3 id="配置第三方下载渠道"><a href="#配置第三方下载渠道" class="headerlink" title="配置第三方下载渠道"></a>配置第三方下载渠道</h3><ol>
+<li><p>渠道源</p>
+<p>科大镜像：<a target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn/</a></p>
+<p>网易：<a target="_blank" rel="noopener" href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com/</a></p>
+<p>七牛云加速器：<a target="_blank" rel="noopener" href="https://reg-mirror.qiniu.com/">https://reg-mirror.qiniu.com</a></p>
+</li>
+<li><p>本地配置</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn/&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>3.重新加载配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<p>​			  4. 查看配置是否成功 docker info		</p>
+<p>​				<img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307181409942.png" alt="image-20230718140933909"></p>
+<h2 id="docker常用命令"><a href="#docker常用命令" class="headerlink" title="docker常用命令"></a>docker常用命令</h2><h3 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:8.0 拉取镜像文件</span><br><span class="line">docker images 查看本地镜像</span><br><span class="line">docker rmi -f mysql:8.0 删除本地镜像</span><br><span class="line">docker search mysql 查询镜像</span><br><span class="line">docker build </span><br><span class="line">			-t name:version 指定构建镜像的名字和版本</span><br><span class="line">			-f 指定其他文件夹下的DockerFile</span><br></pre></td></tr></table></figure>
+
+<h3 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">docker run -x  mysql:8.0  用mysql8.0为镜像做一个容器</span><br><span class="line">            -i 持续运行</span><br><span class="line">            -t 伪终端</span><br><span class="line">            -d 后台运行</span><br><span class="line">            --name x 命名</span><br><span class="line">            -p 81:80 通过宿主机的81端口访问容器的80端口</span><br><span class="line">            -v 虚拟机目录：容器目录  数据卷，也就是虚拟机和容器共享一个内存（一般是一个文件夹）</span><br><span class="line">            -e 指定容器环境变量 TZ=&quot;Asia/Shanghai&quot;设置时区</span><br><span class="line">            --network=host 容器相当于是宿主机中的一个进程，而不是独立的机器，使用bridge，容器和宿主机的地位是平等的</span><br><span class="line">docker logs </span><br><span class="line">            -t 显示时间戳</span><br><span class="line">            --tail =100 显示最近100行的日志 </span><br><span class="line">docker ps 查看运行的容器</span><br><span class="line">docker ps -a 查看所有容器</span><br><span class="line">docker inspect id 查看容器（id）的具体信息</span><br><span class="line">docker stop name 关闭容器</span><br><span class="line">docker start name 开启容器</span><br><span class="line">docker rm name 删除容器</span><br><span class="line">docker exec -it id bash/sh 进入容器中</span><br></pre></td></tr></table></figure>
+
+<h1 id="docker-进阶知识"><a href="#docker-进阶知识" class="headerlink" title="docker 进阶知识"></a>docker 进阶知识</h1><h2 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h2><p>​	1.docker commit（相当于是，开源代码编辑后再次发布）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker commit -m=&quot;描述信息&quot; -a=&quot;作者&quot; id 镜像名称：版本</span><br><span class="line">docker commit -m=&quot;describe&quot; -a=&quot;author&quot; f0c931ce9f33 tomcat-test:1 制作新的tomcat-test镜像</span><br></pre></td></tr></table></figure>
+
+<p>​    2.DockerFile</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FROM 指定父镜像:  基于哪个镜像image构建  指定基础镜像，必须为第一个命令</span><br><span class="line">MAINTAINER :维护者</span><br><span class="line">RUN: 容器创建的时候执行一段命令   构建镜像时执行的命令</span><br><span class="line">ADD: 将本地文件添加到容器中，tar类型文件会自动解压(网络压缩资源不会被解压)，可以访问网络资源，类似wget</span><br><span class="line">COPY:功能类似ADD，但是是不会自动解压文件，也不能访问网络资源</span><br><span class="line">CMD:构建容器后调用，也就是在容器启动时才进行调用。 .sh执行文件</span><br><span class="line">ENV: 设置环境变量</span><br><span class="line">EXPOSE: 指定于外界交互的端口</span><br><span class="line">VOLUME  用于指定持久化目录</span><br><span class="line">WORKDIR 设置进入容器时的路径 默认访问的目录</span><br><span class="line">ENTRYPOINT 容器启动后执行的命令,让容器执行表现的像一个可执行程序一样,与CMD 的 区 别 是 不 可 以 被 docker run 覆 盖 , 会 把 docker run 后 面 的 参 数 当 作 传 递 给ENTRYPOINT 指令的参数。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">FROM java:8 基于java8运行</span><br><span class="line">MAINTAINER wyt</span><br><span class="line">ENV HOME=/home/deploy 定义环境变量</span><br><span class="line">ENV PORT=7071 定义环境变量</span><br><span class="line">WORKDIR $&#123;HOME&#125; 默认访问路径</span><br><span class="line">VOLUME $&#123;HOME&#125;/log 指定log目录</span><br><span class="line">VOLUME /opt/font 指定字体</span><br><span class="line">RUN mkdir -p /opt/font 创建字体目录</span><br><span class="line">COPY *.jar $&#123;HOME&#125;/app.jar 复制jar包到容器里</span><br><span class="line">EXPOSE 7071 外界交互的端口</span><br><span class="line">ENTRYPOINT java </span><br><span class="line">                -Xms128m -Xmx512m xms初始化堆内存 xmx最大可分配堆内存</span><br><span class="line">                -jar pins-app.jar  运行jar包</span><br><span class="line">                --spring.profiles.active=prod  运行在生产环境，还有test,dev等环境</span><br><span class="line">                --server.port=$&#123;PORT&#125;   运行端口</span><br><span class="line">                --spring.datasource.password=xxxxxxxx 设置数据库密码</span><br><span class="line">                --spring.cloud.nacos.discovery.server-addr=1.1.1.1:8080  指定nacos server地址</span><br><span class="line">                --spring.cloud.nacos.discovery.metadata.version=release 指定生产环境</span><br><span class="line">                --spring.cloud.nacos.config.server-addr=1.1.1.1:8080 nacos配置文件的地址</span><br></pre></td></tr></table></figure>
+
+<p>​		3.docker commpse容器编排技术</p>
+<pre><code>        * 项目层   mysql Redis nginx等一个个容器
+        * 服务层   运行镜像的一个示例
+</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3.0&quot;</span><br><span class="line">services:</span><br><span class="line">  mysql: # mysql服务</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    command: --default-authentication-plugin=mysql_native_password #解决外部无法访问</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;3306:3306&quot;      #容器端口映射到宿主机的端口</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_ROOT_PASSWORD: &#x27;root&#x27;</span><br><span class="line">      MYSQL_ALLOW_EMPTY_PASSWORD: &#x27;no&#x27;</span><br><span class="line">      MYSQL_DATABASE: &#x27;mayikt&#x27;</span><br><span class="line">      MYSQL_USER: &#x27;mayikt&#x27;</span><br><span class="line">      MYSQL_PASSWORD: &#x27;mayikt&#x27;</span><br><span class="line">    networks:</span><br><span class="line">      - mayikt_web</span><br><span class="line">  mayikt-web: #自己单独的springboot项目</span><br><span class="line">    hostname: mayikt</span><br><span class="line">    build: ./     #需要构建的Dockerfile文件</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;38000:8080&quot;      #容器端口映射到宿主机的端口</span><br><span class="line">    depends_on:      #web服务依赖mysql服务，要等mysql服务先启动</span><br><span class="line">      - mysql</span><br><span class="line">    networks:</span><br><span class="line">      - mayikt_web</span><br><span class="line">networks:  ## 定义服务的桥</span><br><span class="line">  mayikt_web:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">docker-compose -h                           # 查看帮助</span><br><span class="line"></span><br><span class="line">docker-compose up                           # 创建并运行所有容器</span><br><span class="line">docker-compose up -d                        # 创建并后台运行所有容器</span><br><span class="line">docker-compose -f docker-compose.yml up -d  # 指定模板</span><br><span class="line">docker-compose down                         # 停止并删除容器、网络、卷、镜像。</span><br><span class="line"></span><br><span class="line">docker-compose logs       # 查看容器输出日志</span><br><span class="line">docker-compose pull       # 拉取依赖镜像</span><br><span class="line">dokcer-compose config     # 检查配置</span><br><span class="line">dokcer-compose config -q  # 检查配置，有问题才有输出</span><br><span class="line"></span><br><span class="line">docker-compose restart   # 重启服务</span><br><span class="line">docker-compose start     # 启动服务</span><br><span class="line">docker-compose stop      # 停止服务</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag"># 生活</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2023/09/11/Monkey%E6%B5%8B%E8%AF%95/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#docker%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">docker基础学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#docker%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">docker使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%90%8D%E8%AF%8D"><span class="nav-number">2.1.</span> <span class="nav-text">核心名词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E4%BD%BF%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">下载使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.1.</span> <span class="nav-text">下载原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%AC%AC%E4%B8%89%E6%96%B9%E4%B8%8B%E8%BD%BD%E6%B8%A0%E9%81%93"><span class="nav-number">2.2.2.</span> <span class="nav-text">配置第三方下载渠道</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">2.3.</span> <span class="nav-text">docker常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E5%91%BD%E4%BB%A4"><span class="nav-number">2.3.1.</span> <span class="nav-text">镜像命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">2.3.2.</span> <span class="nav-text">容器命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#docker-%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86"><span class="nav-number">3.</span> <span class="nav-text">docker 进阶知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F"><span class="nav-number">3.1.</span> <span class="nav-text">制作镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.1.</span> <span class="nav-text">常用命令</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阳停"
+      src="/images/1.jpg">
+  <p class="site-author-name" itemprop="name">阳停</p>
+  <div class="site-description" itemprop="description">个人学习成长记录</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阳停</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script type="text/javascript" src="/js/clicklove.js"></script>
+</html>
