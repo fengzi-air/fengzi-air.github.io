@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":50,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="linux及bash编程变量命名12a&#x3D;10b&#x3D;(1 2 3)  打印输出123echo $aecho $&amp;#123;b[0]&amp;#125; echo $&amp;#123;b[*]&amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运维-必备shell编程">
+<meta property="og:url" content="http://example.com/2023/09/12/linux%E5%8F%8Abash%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="风的博客">
+<meta property="og:description" content="linux及bash编程变量命名12a&#x3D;10b&#x3D;(1 2 3)  打印输出123echo $aecho $&amp;#123;b[0]&amp;#125; echo $&amp;#123;b[*]&amp;#125;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307201733696.png">
+<meta property="article:published_time" content="2023-09-12T05:49:27.000Z">
+<meta property="article:modified_time" content="2023-09-12T15:22:31.179Z">
+<meta property="article:author" content="阳停">
+<meta property="article:tag" content="生活">
+<meta property="article:tag" content="学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307201733696.png">
+
+<link rel="canonical" href="http://example.com/2023/09/12/linux%E5%8F%8Abash%E7%BC%96%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>运维-必备shell编程 | 风的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/12/linux%E5%8F%8Abash%E7%BC%96%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="阳停">
+      <meta itemprop="description" content="个人学习成长记录">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          运维-必备shell编程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-09-12 13:49:27 / 修改时间：23:22:31" itemprop="dateCreated datePublished" datetime="2023-09-12T13:49:27+08:00">2023-09-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BF%90%E7%BB%B4%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">运维学习记录</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="linux及bash编程"><a href="#linux及bash编程" class="headerlink" title="linux及bash编程"></a>linux及bash编程</h1><h2 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=10</span><br><span class="line">b=(1 2 3)</span><br></pre></td></tr></table></figure>
+
+<h2 id="打印输出"><a href="#打印输出" class="headerlink" title="打印输出"></a>打印输出</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo $a</span><br><span class="line">echo $&#123;b[0]&#125; </span><br><span class="line">echo $&#123;b[*]&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="bash编程（严格控制空格）"><a href="#bash编程（严格控制空格）" class="headerlink" title="bash编程（严格控制空格）"></a>bash编程（严格控制空格）</h2><h3 id="if、for、while"><a href="#if、for、while" class="headerlink" title="if、for、while"></a>if、for、while</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="keyword">if</span>判断-----<span class="keyword">if</span>开头，<span class="keyword">fi</span>结尾</span></span><br><span class="line">if [ $a -eq $b ];then echo &quot;equal&quot;;elif [ $a -gt $b ];then echo &quot;big&quot;;else echo &quot;small&quot;;fi</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="keyword">for</span>循环</span></span><br><span class="line">for i in $(cat test.txt);do echo $i;done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="keyword">while</span>循环</span></span><br><span class="line">while read i; do echo $i ; done &lt; test.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">a=10 b=20</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">加减乘除</span></span><br><span class="line">echo `expr $a + $b`</span><br><span class="line">echo `expr $a + $b`</span><br><span class="line">echo `expr $a \* $b`</span><br><span class="line">echo `expr $a / $b`</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">取余、赋值、相等、不相等</span></span><br><span class="line">echo `expr $a % $b` 30%20=1余10</span><br><span class="line">a=$b</span><br><span class="line">[ $a == $b ]</span><br><span class="line">[ $a != $b ]</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">相等、不相等、大于、小于、大于等于、小于等于</span></span><br><span class="line">[ $a -eq $b ]</span><br><span class="line">[ $a -ne $b ]</span><br><span class="line">[ $a -gt $b ] #大于</span><br><span class="line">[ $a -lt $b ]</span><br><span class="line">[ $a -ge $b ]#大于等于</span><br><span class="line">[ $a -le $b ]</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Picasso <span class="title function_">with</span><span class="params">(Context context)</span> &#123;    <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;      <span class="keyword">synchronized</span> (Picasso.class) &#123;        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;          singleton = <span class="keyword">new</span> <span class="title class_">Builder</span>(context).build();        &#125;      &#125;    &#125;    <span class="keyword">return</span> singleton;  &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">cd /  #切换到根目录</span><br><span class="line">cd /home #切换到home目录（在根目录下需要带/，非根目录下直接cd 目录名称即可）</span><br><span class="line">ls #横向列出目录</span><br><span class="line">ll #竖向列出目录</span><br><span class="line">pwd #显示当前目录</span><br><span class="line">mkdir wu#创建wu文件夹</span><br><span class="line">rm -rf wu#删除wu文件夹</span><br><span class="line">rm -rf test.txt#删除test.txt</span><br><span class="line">cp /home/test.txt /opt #把home下的test复制到opt目录</span><br><span class="line">mv /home/test.txt /opt#把home下的test移动到opt目录</span><br><span class="line">tar -xzvf documents.tar.gz#解压</span><br><span class="line">unzip documents.zip#解压</span><br><span class="line">apt-get install unzip#下载unzip</span><br><span class="line">vim test.txt#编辑文件</span><br><span class="line">	键入i：进入编辑模式</span><br><span class="line">	键入ESC：进行最后一行模式（退出编辑前的必须步骤）</span><br><span class="line"><span class="meta prompt_">	#</span><span class="language-bash">进入最后一行模式时，可以进行下面的操作</span></span><br><span class="line">	键入[:wq]:保存并退出</span><br><span class="line">	键入[:q!]：不保存并退出</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://cdn.jsdelivr.net/gh/fengzi-air/image/202307201733696.png"></p>
+<h1 id="常见命令-1"><a href="#常见命令-1" class="headerlink" title="常见命令"></a>常见命令</h1><h1 id><a href="#" class="headerlink" title></a></h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag"># 生活</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/09/12/Monkey%E6%B5%8B%E8%AF%95/" rel="prev" title="测试-app稳定性测试">
+      <i class="fa fa-chevron-left"></i> 测试-app稳定性测试
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux%E5%8F%8Abash%E7%BC%96%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">linux及bash编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%91%BD%E5%90%8D"><span class="nav-number">1.1.</span> <span class="nav-text">变量命名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA"><span class="nav-number">1.2.</span> <span class="nav-text">打印输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%A5%E6%A0%BC%E6%8E%A7%E5%88%B6%E7%A9%BA%E6%A0%BC%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">bash编程（严格控制空格）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#if%E3%80%81for%E3%80%81while"><span class="nav-number">1.3.1.</span> <span class="nav-text">if、for、while</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.2.</span> <span class="nav-text">运算符</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">常见命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4-1"><span class="nav-number">3.</span> <span class="nav-text">常见命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text"></span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阳停"
+      src="/images/1.jpg">
+  <p class="site-author-name" itemprop="name">阳停</p>
+  <div class="site-description" itemprop="description">个人学习成长记录</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阳停</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script type="text/javascript" src="/js/clicklove.js"></script>
+</html>
